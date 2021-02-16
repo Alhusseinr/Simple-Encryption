@@ -6,49 +6,43 @@ df = pd.DataFrame(data=encryptionkey)
 
 df['Character'] = df['Character'].astype(str)
 df['Byte'] = df['Byte'].astype(str)
+password = 'password'
 
 
 def split(message):
     return [char for char in message]
 
 
-message = 'your message here'
-message_split = split(message)
-
-
-def code_msg():
-    coded_msg = ""
-
-    for i in range(len(message_split)):
-        j = message_split[i]
+def encode():
+    encryptedPassword = ''
+    passwordSplit = split(password)
+    for i in range(len(passwordSplit)):
+        j = passwordSplit[i]
         try:
             coded_char = encryptionkey.loc[encryptionkey['Character'] == j, 'Byte'].iloc[0]
-
         except:
             print('unrecognized character')
             coded_char = '@@@'
 
-        coded_msg = coded_msg + coded_char
-    return coded_msg
+        encryptedPassword = encryptedPassword + coded_char
+    return encryptedPassword
 
 
-coded_message = code_msg()
-print(code_msg(), '\n')
+coded_password = encode()
+print(encode())
 
 
-def decoded_msg(message):
-    new_word = ''
-    decoded_msg = []
+def decoded_msg(password):
+    decoded = []
 
-    for i in range(0, len(message), 2):
-        j = message[i:i + 2]
+    for i in range(0, len(password), 2):
+        j = password[i:i + 2]
         index_nb = df[df.eq(j).any(1)]
         df2 = index_nb['Character'].tolist()
         s = [str(x) for x in df2]
-        decoded_msg = decoded_msg + s
-    new_word = ''.join(decoded_msg)
+        decoded = decoded + s
+    new_word = ''.join(decoded)
     return new_word
 
 
-coded_message_str = str(coded_message)
-print(decoded_msg(coded_message_str))
+print(decoded_msg(str(coded_password)))
